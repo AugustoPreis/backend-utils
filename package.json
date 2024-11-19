@@ -1,0 +1,25 @@
+{
+  "author": "Augusto Preis Tomasi",
+  "name": "node-utils",
+  "version": "0.0.0",
+  "description": "Utils para backend",
+  "scripts": {
+    "lint": "eslint",
+    "build": "tsc --target ES6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.9.0",
+    "eslint": "^9.15.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.15.0"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "winston": "^3.17.0"
+  }
+}
