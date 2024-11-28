@@ -1,4 +1,5 @@
 const pluginJs = require('@eslint/js');
+const pluginJest = require('eslint-plugin-jest');
 const tseslint = require('typescript-eslint');
 
 module.exports = [
@@ -8,6 +9,12 @@ module.exports = [
     files: [
       '**/*.{js,mjs,cjs,ts}',
     ],
+    plugins: {
+      jest: pluginJest,
+    },
+    languageOptions: {
+      globals: pluginJest.environments.globals.globals,
+    },
   },
   {
     ignores: [
