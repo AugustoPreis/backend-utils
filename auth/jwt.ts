@@ -1,48 +1,43 @@
 import jwt from 'jsonwebtoken';
 import { HttpStatus } from '../enums';
-import { isValidString } from '../validators';
+import { isValidObject, isValidString } from '../validators';
 
 export interface VerifyJWTError {
   httpStatus: HttpStatus;
   message: string;
 }
 
-export type VerifyJWTCallback<Decoded> = (error: VerifyJWTError | null, decoded: Decoded | null) => void;
-
-export async function verifyJWT<Decoded>(token: string, secretKey: string, callback: VerifyJWTCallback<Decoded>): Promise<void> {
+export async function verifyJWT<Decoded>(token: string, secretKey: string): Promise<Decoded & jwt.JwtPayload> {
   if (!isValidString(token)) {
-    return callback({
-      httpStatus: HttpStatus.UNAUTHORIZED,
-      message: 'Token não informado',
-    }, null);
+    throw new Error('Token JWT não informado');
   }
 
   if (!isValidString(secretKey)) {
-    return callback({
-      httpStatus: HttpStatus.UNAUTHORIZED,
-      message: 'Chave JWT não informada',
-    }, null);
+    throw new Error('Chave JWT não informada');
   }
 
-  new Promise((resolve, reject) => {
+  return await new Promise((resolve, reject) => {
     jwt.verify(token, secretKey, (err: jwt.VerifyErrors, decoded: Decoded & jwt.JwtPayload) => {
       if (err) {
-        return reject(handleJWTVerifyError(err));
+        const message = handleJWTVerifyError(err);
+
+        return reject(new Error(message));
       }
 
-      return resolve(decoded);
+      resolve(decoded);
     });
-  }).then((data: Decoded) => {
-    return callback(null, data);
-  }).catch((err: string) => {
-    return callback({
-      httpStatus: HttpStatus.UNAUTHORIZED,
-      message: err,
-    }, null);
   });
 }
 
 export function signJWT(values: object, secretKey: string, options?: jwt.SignOptions) {
+  if (!isValidObject(values, { minProperties: 1 })) {
+    throw new Error('Valores do usuário não informados');
+  }
+
+  if (!isValidString(secretKey)) {
+    throw new Error('Chave JWT não informada');
+  }
+
   return jwt.sign(values, secretKey, options);
 }
 
