@@ -4,7 +4,7 @@ const key = 'chave_com_32_caracteres123456789';
 
 describe('Encrypt', () => {
   it('Hash', () => {
-    const value = Encrypt.hash('password');
+    const value = Encrypt.hash('password', 5);
 
     expect(value).not.toBe('password');
     expect(value).toEqual(expect.any(String));
@@ -35,12 +35,12 @@ describe('Encrypt', () => {
   });
 
   it('Random', () => {
-    const value1 = Encrypt.random(10);
+    const value1 = Encrypt.random();
     const value2 = Encrypt.random(15);
+    const value3 = Encrypt.random(20);
 
-    expect(value1).toEqual(expect.any(String));
     expect(value1.length).toBe(20);
-    expect(value2).toEqual(expect.any(String));
     expect(value2.length).toBe(30);
+    expect(value3.length).toBe(40);
   });
 });
