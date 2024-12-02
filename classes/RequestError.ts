@@ -1,17 +1,54 @@
-import { HttpStatus } from '../enums';
+import { StatusCodes } from 'http-status-codes';
 
 export class RequestError extends Error {
-  code: number;
+  httpStatusCode: StatusCodes;
 
-  constructor(code?: HttpStatus, message?: string) {
+  constructor(httpStatusCode: StatusCodes, message: string) {
     super(message);
 
-    this.code = code;
+    this.httpStatusCode = httpStatusCode;
   }
 
-  format(): string {
-    const { code, message } = this;
+  getJSON() {
+    return {
+      statusCode: this.httpStatusCode,
+      message: this.message,
+    };
+  }
+}
 
-    return `${code} - ${message}`;
+export class NotFoundError extends RequestError {
+  constructor(message: string) {
+    super(StatusCodes.NOT_FOUND, message);
+  }
+}
+
+export class InternalError extends RequestError {
+  constructor(message: string) {
+    super(StatusCodes.INTERNAL_SERVER_ERROR, message);
+  }
+}
+
+export class BadRequestError extends RequestError {
+  constructor(message: string) {
+    super(StatusCodes.BAD_REQUEST, message);
+  }
+}
+
+export class UnauthorizedError extends RequestError {
+  constructor(message: string) {
+    super(StatusCodes.UNAUTHORIZED, message);
+  }
+}
+
+export class ForbiddenError extends RequestError {
+  constructor(message: string) {
+    super(StatusCodes.FORBIDDEN, message);
+  }
+}
+
+export class ConflictError extends RequestError {
+  constructor(message: string) {
+    super(StatusCodes.CONFLICT, message);
   }
 }
