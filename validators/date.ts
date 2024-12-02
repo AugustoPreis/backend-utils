@@ -15,11 +15,12 @@ export function isValidDate(value: unknown, config?: Partial<DateValidatorConfig
   }
 
   if (!config) {
-    return !isValidNumber(value.getTime());
+    return isValidNumber(value.getTime());
   }
 
-  const { min, max } = config;
   const time = value.getTime();
+  const min = isDate(config.min) ? config.min.getTime() : config.min;
+  const max = isDate(config.max) ? config.max.getTime() : config.max;
 
   if (isValidNumber(min) && time < min) {
     return false;
