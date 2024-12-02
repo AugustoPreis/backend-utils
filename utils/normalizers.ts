@@ -37,7 +37,7 @@ export function string(value: unknown, config?: Partial<NormalizeStringConfig>):
 export function number(value: unknown, config?: Partial<NormalizeNumberConfig>): number | null {
   let normalized: string | number = value as string | number;
 
-  if (isString(normalized)) {
+  if (isValidString(normalized) && normalized !== 'NaN') {
     normalized = Number(normalized);
   }
 
@@ -67,7 +67,7 @@ export function number(value: unknown, config?: Partial<NormalizeNumberConfig>):
 }
 
 export function boolean(value: unknown): boolean {
-  if (isValidString(value)) {
+  if (isString(value)) {
     return value.trim() === 'true';
   }
 
