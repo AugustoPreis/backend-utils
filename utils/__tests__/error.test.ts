@@ -1,7 +1,7 @@
 import { QueryFailedError } from 'typeorm';
 import { HttpStatus } from '../../enums';
 import { BadRequestError, ConflictError, InternalError, RequestError, UnauthorizedError } from '../../classes';
-import { DEFAULT_ERROR_MESSAGE, errorToString, formatError, formatTypeormError } from '../error';
+import { DEFAULT_ERROR_MESSAGE, errorToString, formatError, formatTypeormError } from '..';
 
 describe('Error utils', () => {
   it('Default Error Message', () => {
