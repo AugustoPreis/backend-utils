@@ -52,3 +52,23 @@ export class ConflictError extends RequestError {
     super(HttpStatus.CONFLICT, message);
   }
 }
+
+export class FieldsValidationError extends BadRequestError {
+  errors: string[];
+
+  constructor(errors?: string[]) {
+    super('Erro na validação dos campos');
+
+    if (Array.isArray(errors)) {
+      this.errors = errors;
+    }
+  }
+
+  getJSON() {
+    return {
+      statusCode: this.httpStatusCode,
+      message: this.message,
+      errors: this.errors || [],
+    }
+  }
+}

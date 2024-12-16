@@ -1,5 +1,5 @@
 import { HttpStatus } from '../../enums';
-import { RequestError, BadRequestError, UnauthorizedError, ForbiddenError, NotFoundError, ConflictError, InternalError } from '..';
+import { RequestError, BadRequestError, UnauthorizedError, ForbiddenError, NotFoundError, ConflictError, InternalError, FieldsValidationError } from '..';
 
 describe('Request Error', () => {
   it('Request Error (any status code)', () => {
@@ -44,49 +44,71 @@ describe('Request Error', () => {
       message: 'default error message',
     });
   });
-});
 
-it('Unauthorized (401)', () => {
-  const error = new UnauthorizedError('default error message');
+  it('Unauthorized (401)', () => {
+    const error = new UnauthorizedError('default error message');
 
-  expect(error.getJSON()).toEqual({
-    statusCode: HttpStatus.UNAUTHORIZED,
-    message: 'default error message',
+    expect(error.getJSON()).toEqual({
+      statusCode: HttpStatus.UNAUTHORIZED,
+      message: 'default error message',
+    });
   });
-});
 
-it('Forbidden (403)', () => {
-  const error = new ForbiddenError('default error message');
+  it('Forbidden (403)', () => {
+    const error = new ForbiddenError('default error message');
 
-  expect(error.getJSON()).toEqual({
-    statusCode: HttpStatus.FORBIDDEN,
-    message: 'default error message',
+    expect(error.getJSON()).toEqual({
+      statusCode: HttpStatus.FORBIDDEN,
+      message: 'default error message',
+    });
   });
-});
 
-it('Not Found (404)', () => {
-  const error = new NotFoundError('default error message');
+  it('Not Found (404)', () => {
+    const error = new NotFoundError('default error message');
 
-  expect(error.getJSON()).toEqual({
-    statusCode: HttpStatus.NOT_FOUND,
-    message: 'default error message',
+    expect(error.getJSON()).toEqual({
+      statusCode: HttpStatus.NOT_FOUND,
+      message: 'default error message',
+    });
   });
-});
 
-it('Conflict (409)', () => {
-  const error = new ConflictError('default error message');
+  it('Conflict (409)', () => {
+    const error = new ConflictError('default error message');
 
-  expect(error.getJSON()).toEqual({
-    statusCode: HttpStatus.CONFLICT,
-    message: 'default error message',
+    expect(error.getJSON()).toEqual({
+      statusCode: HttpStatus.CONFLICT,
+      message: 'default error message',
+    });
   });
-});
 
-it('Internal Server (500)', () => {
-  const error = new InternalError('default error message');
+  it('Internal Server (500)', () => {
+    const error = new InternalError('default error message');
 
-  expect(error.getJSON()).toEqual({
-    statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-    message: 'default error message',
+    expect(error.getJSON()).toEqual({
+      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: 'default error message',
+    });
+  });
+
+  it('Fields Validation Error (400)', () => {
+    const error1 = new FieldsValidationError();
+    const error2 = new FieldsValidationError([]);
+    const error3 = new FieldsValidationError(['erro1', 'erro2']);
+
+    expect(error1.getJSON()).toEqual({
+      statusCode: HttpStatus.BAD_REQUEST,
+      message: 'Erro na validação dos campos',
+      errors: [],
+    });
+    expect(error2.getJSON()).toEqual({
+      statusCode: HttpStatus.BAD_REQUEST,
+      message: 'Erro na validação dos campos',
+      errors: [],
+    });
+    expect(error3.getJSON()).toEqual({
+      statusCode: HttpStatus.BAD_REQUEST,
+      message: 'Erro na validação dos campos',
+      errors: ['erro1', 'erro2'],
+    });
   });
 });
