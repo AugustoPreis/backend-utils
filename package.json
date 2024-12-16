@@ -1,7 +1,7 @@
 {
   "author": "Augusto Preis Tomasi",
   "name": "node-backend-utils",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Utils para backend",
   "scripts": {
     "lint": "eslint",
