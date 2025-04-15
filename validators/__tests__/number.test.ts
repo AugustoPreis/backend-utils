@@ -31,6 +31,9 @@ describe('Array validator', () => {
     expect(isValidNumber(10)).toBe(true);
     expect(isValidNumber(1.1)).toBe(true);
 
+    expect(isValidNumber(NaN, {})).toBe(false);
+    expect(isValidNumber(Infinity, {})).toBe(false);
+
     expect(isValidNumber(-2, { min: -1 })).toBe(false);
     expect(isValidNumber(0, { min: 5 })).toBe(false);
     expect(isValidNumber(2, { min: 5 })).toBe(false);

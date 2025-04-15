@@ -16,8 +16,12 @@ export function isValidNumber(value: unknown, config?: Partial<NumberValidatorCo
     return false;
   }
 
+  if (isNaN(value) || !isFinite(value)) {
+    return false;
+  }
+
   if (!config) {
-    return !isNaN(value) && isFinite(value);
+    return true;
   }
 
   const { min, max, minDecimalPlaces, maxDecimalPlaces, integer, float } = config;
